@@ -6,7 +6,7 @@ export interface Process {
   status: "none" | "waiting" | "executing" | "completed";
   startTime?: number;
   endTime?: number;
-  priority: 0 | 1 | 2 | 3; //0 means executing, 1 is highest, 3 is lowest
+  priority: 0 | 1 | 2 | 3; //0 is for initialization and algos that don't use it
   lastExecutionStartTime?: number;
   lastEnqueueTime: number;
 }

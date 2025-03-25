@@ -1,5 +1,6 @@
 import { AlgorithmState, TimeSegment, AlgorithmProps } from "@/types/Process";
 import { useRef, useState, useEffect } from "react";
+import DisplayCompletedProcesses from "@/components/DisplayCompletedProcesses";
 
 const MLFQStep = (
   myState: AlgorithmState,
@@ -90,7 +91,9 @@ const MLFQStep = (
     newExecutingProcess.at(0) === undefined
   ) {
     newReadyQueue[0].status = "executing";
-    newReadyQueue[0].startTime = newTime;
+    newReadyQueue[0].startTime = newReadyQueue[0].startTime
+      ? newReadyQueue[0].startTime
+      : newTime;
     newReadyQueue[0].lastExecutionStartTime = newTime;
     newExecutingProcess.push(newReadyQueue[0]);
     newReadyQueue.shift();
@@ -177,6 +180,9 @@ const MLFQ: React.FC<AlgorithmProps> = ({
           </div>
         ))}
       </div>
+      <DisplayCompletedProcesses
+        completedProcesses={state.completedProcesses}
+      />
     </div>
   );
 };

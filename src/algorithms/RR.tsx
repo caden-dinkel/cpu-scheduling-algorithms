@@ -76,7 +76,9 @@ const RRStep = (myState: AlgorithmState, timeQuantum: number) => {
     newExecutingProcess.at(0) === undefined
   ) {
     newReadyQueue[0].status = "executing";
-    newReadyQueue[0].startTime = newTime;
+    newReadyQueue[0].startTime = newReadyQueue[0].startTime
+      ? newReadyQueue[0].startTime
+      : newTime;
     newReadyQueue[0].lastExecutionStartTime = newTime;
     newExecutingProcess.push(newReadyQueue[0]);
     newReadyQueue.shift();

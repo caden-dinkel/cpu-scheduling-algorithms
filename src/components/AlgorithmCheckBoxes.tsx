@@ -2,7 +2,7 @@ import Checkbox from "./CheckBox";
 import CheckNumberBoxComboRR from "./CheckNumberBoxCombo";
 import CheckNumberBoxComboMLFQ from "./CheckNumberBoxComboMLFQ";
 
-interface AlgorithmCheckBoxesProps {
+export interface AlgorithmCheckBoxesProps {
   selectedValues: Set<string>;
   onSelectionChange: (algId: string, checked: boolean) => void; // Passes Record of which algorithms are enabled to parent function
   onRRTimeQuantumChange: (newNumber: number) => void;
@@ -13,7 +13,7 @@ interface AlgorithmCheckBoxesProps {
   boostTimeMLFQ: number;
 }
 
-const CheckboxGroup: React.FC<AlgorithmCheckBoxesProps> = ({
+const AlgorithmCheckBoxes: React.FC<AlgorithmCheckBoxesProps> = ({
   selectedValues,
   onSelectionChange,
   onMLFQBoostTimeChange,
@@ -78,4 +78,4 @@ const CheckboxGroup: React.FC<AlgorithmCheckBoxesProps> = ({
   );
 };
 
-export default AlgorithmCheckBoxesProps;
+export default AlgorithmCheckBoxes;
