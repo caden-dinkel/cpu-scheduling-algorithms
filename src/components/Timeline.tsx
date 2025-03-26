@@ -1,7 +1,6 @@
 import { TimeSegment, Process } from "@/types/Process";
 import { motion } from "framer-motion";
 import ColorKey from "./ColorKey";
-import { label } from "framer-motion/client";
 
 interface TimelineProps {
   executionPath: TimeSegment[];
@@ -18,7 +17,7 @@ const TimelineMLFQ: React.FC<TimelineProps> = ({
   time,
   totalTime,
 }) => {
-  const length = 1000; // Total timeline width
+  const length = 1000;
   const numMarkers = 4; // Number of time markers
   const markerSpacing = totalTime / numMarkers;
 

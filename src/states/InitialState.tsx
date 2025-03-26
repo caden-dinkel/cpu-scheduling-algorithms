@@ -1,5 +1,4 @@
 import AlgorithmCheckBoxes from "@/components/AlgorithmCheckBoxes";
-import Button from "@/components/Button";
 import { Process } from "@/types/Process";
 import ProcessGeneration from "@/components/GenerateProcesses";
 import DisplayProcesses from "@/components/DisplayProcesses";

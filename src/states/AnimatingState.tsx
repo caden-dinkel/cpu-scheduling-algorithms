@@ -40,15 +40,15 @@ const AnimatingState: React.FC<AnimatingStateProps> = ({
       {algorithmsToRun.has("RR") && (
         <RR
           processes={processes}
-          timeQuantum={timeQuantumRR!}
+          timeQuantum={timeQuantumRR}
           totalTime={totalTime}
         />
       )}
       {algorithmsToRun.has("MLFQ") && (
         <MLFQ
           processes={processes}
-          timeQuantum={timeQuantumMLFQ!}
-          boostTime={boostTime!}
+          timeQuantum={timeQuantumMLFQ}
+          boostTime={boostTime}
           totalTime={totalTime}
         />
       )}

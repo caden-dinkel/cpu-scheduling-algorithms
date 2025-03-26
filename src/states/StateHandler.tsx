@@ -76,6 +76,9 @@ const StateHandler: React.FC = () => {
         <AnimatingState
           processes={processes}
           algorithmsToRun={selectedAlgorithms}
+          boostTime={boostTime}
+          timeQuantumMLFQ={timeQuantumMLFQ}
+          timeQuantumRR={timeQuantumRR}
         />
       )}
     </div>

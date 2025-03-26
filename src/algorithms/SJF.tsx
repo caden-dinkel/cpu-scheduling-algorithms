@@ -2,6 +2,15 @@ import { AlgorithmState, TimeSegment, AlgorithmProps } from "@/types/Process";
 import { useRef, useState, useEffect } from "react";
 import DisplayCompletedProcesses from "@/components/DisplayCompletedProcesses";
 import TimelineOthers from "@/components/TimelineOthers";
+import { exportAsPDF } from "@/utils/exportAsPDF";
+
+import dynamic from "next/dynamic";
+
+// Dynamically import the chart with SSR disabled
+const BarChart = dynamic(() => import("../components/PieChart"), {
+  ssr: false,
+  loading: () => <p>Loading...</p>,
+});
 
 const SJFStep = (myState: AlgorithmState) => {
   //new State Values
@@ -118,6 +127,8 @@ const SJF: React.FC<AlgorithmProps> = ({ processes, totalTime }) => {
   //Processes is sorted by arrival time
   state.notQueuedProcesses.sort((a, b) => a.arrivalTime - b.arrivalTime);
 
+  const pdfRef = useRef<HTMLDivElement>(null);
+
   //Don't trigger re-render, but update between intervals
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -140,8 +151,10 @@ const SJF: React.FC<AlgorithmProps> = ({ processes, totalTime }) => {
   }, [state, hasSteppedFinalTime]);
   return (
     <div
-      className="border-2 p-4 rounded-lg"
+      ref={pdfRef}
+      className="border-2 p-4 rounded-lg flex flex-col gap-4"
       style={{
+        position: "relative",
         color: `var(--foreground)`,
         backgroundColor: `var(--background)`,
       }}
@@ -149,6 +162,22 @@ const SJF: React.FC<AlgorithmProps> = ({ processes, totalTime }) => {
       <h2 className="text-lg font-bold text-center">
         Shortest Job First (SJF)
       </h2>
+      {hasSteppedFinalTime && (
+        <span
+          onClick={() => exportAsPDF(pdfRef, "simulation_SJF.pdf")}
+          style={{
+            fontSize: "18px",
+            color: "rgb(117, 168, 223)",
+            textDecoration: "underline",
+            cursor: "pointer",
+            transition: "color 0.3s",
+            position: "absolute",
+            right: 30,
+          }}
+        >
+          Export Content
+        </span>
+      )}
       <div className="border p-2 mt-2 rounded">
         <strong>Time:</strong> {state.time}
       </div>
@@ -165,6 +194,9 @@ const SJF: React.FC<AlgorithmProps> = ({ processes, totalTime }) => {
         <DisplayCompletedProcesses
           completedProcesses={state.completedProcesses}
         />
+      </div>
+      <div className="border p-2 rounded">
+        <BarChart completedProcesses={[...state.completedProcesses]} />
       </div>
       <div className="border p-2 mt-2 rounded">
         <h6 className="text-lg font-bold text-left">Process Execution Path</h6>

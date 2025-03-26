@@ -1,10 +1,11 @@
 import StateHandler from "@/states/StateHandler";
 
-const Home: React.FC = () => {
+function App() {
   return (
-    <div>
+    <div className="boxed">
       <StateHandler />
     </div>
   );
-};
-export default Home;
+}
+
+export default App;
