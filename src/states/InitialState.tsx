@@ -34,22 +34,20 @@ const InitialState: React.FC<InitialStateProps> = ({
 }) => {
   return (
     <>
-      <AlgorithmCheckBoxes
-        selectedValues={selectedValues}
-        onSelectionChange={onSelectionChange}
-        onRRTimeQuantumChange={onRRTimeQuantumChange}
-        onMLFQTimeQuantumChange={onMLFQTimeQuantumChange}
-        onMLFQBoostTimeChange={onMLFQBoostTimeChange}
-        timeQuantumRR={timeQuantumRR}
-        timeQuantumMLFQ={timeQuantumMLFQ}
-        boostTimeMLFQ={boostTimeMLFQ}
-      />
-      <Button
-        onClick={onSubmit}
-        label="Start Animation"
-        disabled={processes ? false : true}
-      />
-      <ProcessGeneration onGenerate={onGenerate} />
+      <div className="flex gap-6 w-full px-6">
+        <ProcessGeneration onGenerate={onGenerate} />
+        <AlgorithmCheckBoxes
+          selectedValues={selectedValues}
+          onSelectionChange={onSelectionChange}
+          onRRTimeQuantumChange={onRRTimeQuantumChange}
+          onMLFQTimeQuantumChange={onMLFQTimeQuantumChange}
+          onMLFQBoostTimeChange={onMLFQBoostTimeChange}
+          timeQuantumRR={timeQuantumRR}
+          timeQuantumMLFQ={timeQuantumMLFQ}
+          boostTimeMLFQ={boostTimeMLFQ}
+          onSubmit={onSubmit}
+        />
+      </div>
       {processes.length > 0 && <DisplayProcesses processes={processes} />}
     </>
   );

@@ -22,7 +22,7 @@ const TimelineOthers: React.FC<TimelineProps> = ({
 
   //Returns process given pid
   const getProcess: (pid: number) => Process[] = (pid: number) => {
-    let processesWithPID: Process[] = [];
+    const processesWithPID: Process[] = [];
     processes.forEach((process) => {
       if (process.id === pid) {
         processesWithPID.push(process);
@@ -33,7 +33,7 @@ const TimelineOthers: React.FC<TimelineProps> = ({
 
   //Returns color given PID
   const getColor: (pid: number) => string = (pid: number) => {
-    let thisProcess: Process[] = getProcess(pid);
+    const thisProcess: Process[] = getProcess(pid);
     switch (thisProcess[0].status) {
       case "none":
         return "#958987";

@@ -69,7 +69,7 @@ const RRStep = (myState: AlgorithmState, timeQuantum: number) => {
       processID: newExecutingProcess[0].id,
     };
     newAlgorithmExecution.push(newTimeSegment);
-
+    newExecutingProcess[0].status = "waiting";
     newReadyQueue.push(newExecutingProcess[0]);
     newExecutingProcess.shift();
     newReadyQueue.sort((a, b) => a.priority - b.priority);
@@ -160,23 +160,35 @@ const RR: React.FC<AlgorithmProps> = ({
     //If time is in dependency array, will tick until time does not change
   }, [state, hasSteppedFinalTime, timeQuantum]);
   return (
-    <div>
-      {state.time}
-      <TimelineOthers
-        processes={state.processes}
-        executingProcess={state.executingProcess}
-        executionPath={state.algorithmExecution}
-        time={state.time}
-        totalTime={totalTime}
-      />
-      <div>
+    <div
+      className="border-2 p-4 rounded-lg"
+      style={{
+        color: `var(--foreground)`,
+        backgroundColor: `var(--background)`,
+      }}
+    >
+      <h2 className="text-lg font-bold text-center">Round Robin (RR)</h2>
+      <div className="border p-2 mt-2 rounded">
+        <strong>Time:</strong> {state.time}
+      </div>
+      <div className="border  p-2 mt-2 rounded">
+        <TimelineOthers
+          processes={state.processes}
+          executingProcess={state.executingProcess}
+          executionPath={state.algorithmExecution}
+          time={state.time}
+          totalTime={totalTime}
+        />
+      </div>
+      <div className="border p-2 mt-2 rounded">
         <DisplayCompletedProcesses
           completedProcesses={state.completedProcesses}
         />
       </div>
-      <div>
+      <div className="border p-2 mt-2 rounded">
+        <h6 className="text-lg font-bold text-left">Process Execution Path</h6>
         {state.algorithmExecution.map((p, index) => (
-          <div key={index}>
+          <div key={index} style={{ color: `var(--foreground)` }}>
             Start: {p.startTime} End: {p.endTime} PID: {p.processID}
           </div>
         ))}

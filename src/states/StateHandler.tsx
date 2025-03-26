@@ -2,6 +2,7 @@ import InitialState from "./InitialState";
 import { useState } from "react";
 import { Process } from "@/types/Process";
 import AnimatingState from "./AnimatingState";
+import Header from "@/components/Header";
 
 const StateHandler: React.FC = () => {
   const [currentState, setCurrentState] = useState<
@@ -34,13 +35,30 @@ const StateHandler: React.FC = () => {
   const [boostTime, setBoostTime] = useState<number>(10);
   // Handle transition from InitialState to AnimatingState
   const handleStartAnimation = () => {
-    setCurrentState("animating"); // Switch state
+    if (processes.length !== 0) {
+      setCurrentState("animating"); // Switch state
+    }
+  };
+
+  const handleGoBack = () => {
+    switch (currentState) {
+      case "animating":
+        setCurrentState("initial");
+      case "complete":
+        setCurrentState("animating");
+      case "initial":
+        setCurrentState("initial");
+    }
   };
 
   //Create a function to handle the completion of the algorithm -> switch to CompleteState
   //{currentState === "complete" && <CompleteState />}
   return (
     <div>
+      <Header
+        label="CPU Scheduling Algorithms Animations"
+        handleGoBack={handleGoBack}
+      />
       {currentState === "initial" && (
         <InitialState
           onSelectionChange={handleSelectionChange}

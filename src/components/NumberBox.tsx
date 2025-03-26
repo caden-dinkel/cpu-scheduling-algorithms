@@ -19,10 +19,27 @@ const NumberBox: React.FC<NumberBoxProps> = ({
   };
   return (
     <>
-      <label htmlFor={id} className="block text-lg font-semibold text-gray-700">
+      <label
+        htmlFor={id}
+        style={{
+          color: `var(--foreground)`,
+          padding: "5px",
+        }}
+      >
         {label}
       </label>
-      <input id={id} value={value} type="number" onChange={handleValueChange} />
+      <input
+        style={{
+          backgroundColor: `var(--foreground)`,
+          color: `var(--background)`,
+          width: "60px",
+          border: "1px solid var(--background)",
+        }}
+        id={id}
+        value={value}
+        type="number"
+        onChange={handleValueChange}
+      />
     </>
   );
 };

@@ -1,6 +1,7 @@
 import Checkbox from "./CheckBox";
 import CheckNumberBoxComboRR from "./CheckNumberBoxCombo";
 import CheckNumberBoxComboMLFQ from "./CheckNumberBoxComboMLFQ";
+import Button from "./Button";
 
 export interface AlgorithmCheckBoxesProps {
   selectedValues: Set<string>;
@@ -11,6 +12,7 @@ export interface AlgorithmCheckBoxesProps {
   timeQuantumRR: number;
   timeQuantumMLFQ: number;
   boostTimeMLFQ: number;
+  onSubmit: () => void;
 }
 
 const AlgorithmCheckBoxes: React.FC<AlgorithmCheckBoxesProps> = ({
@@ -22,16 +24,20 @@ const AlgorithmCheckBoxes: React.FC<AlgorithmCheckBoxesProps> = ({
   timeQuantumMLFQ,
   timeQuantumRR,
   boostTimeMLFQ,
+  onSubmit,
 }) => {
   return (
-    <div>
-      <Checkbox
-        key="FCFS"
-        id="FCFS"
-        label="First-Come-First-Serve"
-        checked={selectedValues.has("FCFS")}
-        onChange={(checked) => onSelectionChange("FCFS", checked)}
-      />
+    <div className="flex flex-col border-2 p-6 rounded-lg w-1/2 max-w-[600px] h-full justify-between items-start gap-6 self-center">
+      <h1>Select the Algorithms you wish to Run</h1>
+      <div className="flex gap-4">
+        <Checkbox
+          key="FCFS"
+          id="FCFS"
+          label="First-Come-First-Serve"
+          checked={selectedValues.has("FCFS")}
+          onChange={(checked) => onSelectionChange("FCFS", checked)}
+        />
+      </div>
       <Checkbox
         key="SJF"
         id="SJF"
@@ -65,6 +71,11 @@ const AlgorithmCheckBoxes: React.FC<AlgorithmCheckBoxesProps> = ({
         onTimeQuantumChange={onMLFQTimeQuantumChange}
         boostTime={boostTimeMLFQ}
         timeQuantum={timeQuantumMLFQ}
+      />
+      <Button
+        onClick={onSubmit}
+        label="Start Animation"
+        disabled={selectedValues.size === 0 ? true : false}
       />
     </div>
   );

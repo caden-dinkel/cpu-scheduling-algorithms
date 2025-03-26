@@ -22,20 +22,21 @@ const CheckNumberBoxComboMLFQ: React.FC<CheckNumberBoxComboMLFQProps> = ({
     <>
       <Checkbox id={id} label={label} checked={checked} onChange={onChange} />
       {checked && (
+        <>
           <NumberBox
             id="MLFQTQ"
             label="Time Quantum - MLFQ"
             onValueChange={onTimeQuantumChange}
             value={timeQuantum}
           />
-        ) && (
           <NumberBox
             id="MLFQBT"
             label="Boost Time - MLFQ"
             onValueChange={onBoostTimeChange}
             value={boostTime}
           />
-        )}
+        </>
+      )}
     </>
   );
 };

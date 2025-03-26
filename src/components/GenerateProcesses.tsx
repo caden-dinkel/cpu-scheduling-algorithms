@@ -104,43 +104,71 @@ const ProcessGeneration: React.FC<ProcessGenerationProps> = ({
   };
   //Will need to format answer
   return (
-    <>
-      <NumberBox
-        value={numProcesses}
-        id="num"
-        label="Number of Processes"
-        onValueChange={handleProcessNumChange}
-      />
-      <NumberBox
-        value={maxBurstTime}
-        id="max-BT"
-        label="Maximum Burst Time"
-        onValueChange={handleMaxBurstTimeChange}
-      />
-      <NumberBox
-        value={minBurstTime}
-        id="min-BT"
-        label="Minumum Burst Time"
-        onValueChange={handleMinBurstTimeChange}
-      />
-      <NumberBox
-        value={maxArrivalTime}
-        id="max-AT"
-        label="Maximum Arrival Time"
-        onValueChange={handleMaxArrivalTimeChange}
-      />
-      <NumberBox
-        value={minArrivalTime}
-        id="min-AT"
-        label="Minimum Arrival Time"
-        onValueChange={handleMinArrivalTimeChange}
-      />
-      <Button
-        id="proc-gen"
-        label="Generate Processes"
-        onClick={handleProcessGeneration}
-      />
-    </>
+    <div
+      className="border-2 p-6 rounded-lg flex flex-col gap-4 w-1/2 max-w-[600px]"
+      style={{
+        color: "var(--foreground)",
+        backgroundColor: "var(--background)",
+      }}
+    >
+      <h2 className="flex gap-4 mx-auto">
+        Random Process Generation Parameters
+      </h2>
+      {/* Number of Processes */}
+      <div className="flex gap-4 mx-auto">
+        <NumberBox
+          value={numProcesses}
+          id="num"
+          label="Number of Processes"
+          onValueChange={handleProcessNumChange}
+        />
+      </div>
+
+      {/* Burst Time Inputs */}
+      <div className="flex gap-4 mx-auto">
+        <NumberBox
+          value={maxBurstTime}
+          id="max-BT"
+          label="Maximum Burst Time"
+          onValueChange={handleMaxBurstTimeChange}
+        />
+      </div>
+      <div className="flex gap-4 mx-auto">
+        <NumberBox
+          value={minBurstTime}
+          id="min-BT"
+          label="Minimum Burst Time"
+          onValueChange={handleMinBurstTimeChange}
+        />
+      </div>
+
+      {/* Arrival Time Inputs */}
+      <div className="flex gap-4 mx-auto">
+        <NumberBox
+          value={maxArrivalTime}
+          id="max-AT"
+          label="Maximum Arrival Time"
+          onValueChange={handleMaxArrivalTimeChange}
+        />
+      </div>
+      <div className="flex gap-4 mx-auto">
+        <NumberBox
+          value={minArrivalTime}
+          id="min-AT"
+          label="Minimum Arrival Time"
+          onValueChange={handleMinArrivalTimeChange}
+        />
+      </div>
+
+      {/* Generate Button */}
+      <div className="flex justify-center">
+        <Button
+          id="proc-gen"
+          label="Generate Processes"
+          onClick={handleProcessGeneration}
+        />
+      </div>
+    </div>
   );
 };
 
