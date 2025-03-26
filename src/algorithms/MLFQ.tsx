@@ -10,11 +10,11 @@ const MLFQStep = (
 ) => {
   //new State Values
   let newTime = myState.time || 0;
-  let newAlgorithmExecution = [...myState.algorithmExecution]; // Shallow copy to trigger state update
-  let newCompletedProcesses = [...myState.completedProcesses]; // Ensure completed processes array updates
-  let newReadyQueue = [...myState.readyQueue];
-  let newExecutingProcess = [...myState.executingProcess];
-  let newNotQueuedProcesses = [...myState.notQueuedProcesses];
+  const newAlgorithmExecution = [...myState.algorithmExecution]; // Shallow copy to trigger state update
+  const newCompletedProcesses = [...myState.completedProcesses]; // Ensure completed processes array updates
+  const newReadyQueue = [...myState.readyQueue];
+  const newExecutingProcess = [...myState.executingProcess];
+  const newNotQueuedProcesses = [...myState.notQueuedProcesses];
   let newRemainingTimeQuantum = myState.remainingTimeQuantum;
   let newRemainingBoostTime = myState.remainingBoostTime;
 
@@ -54,7 +54,7 @@ const MLFQStep = (
   ) {
     newExecutingProcess[0].endTime = newTime;
     newExecutingProcess[0].status = "completed";
-    let newTimeSegment: TimeSegment = {
+    const newTimeSegment: TimeSegment = {
       startTime: newExecutingProcess[0].lastExecutionStartTime!,
       endTime: newTime,
       processID: newExecutingProcess[0].id,
@@ -73,7 +73,7 @@ const MLFQStep = (
   //If timequantum out, swap back to readyQueue, lower priority
   if (newRemainingTimeQuantum === timeQuantum) {
     newExecutingProcess[0].lastEnqueueTime = newTime;
-    let newTimeSegment: TimeSegment = {
+    const newTimeSegment: TimeSegment = {
       startTime: newExecutingProcess[0].lastExecutionStartTime!,
       endTime: newTime,
       processID: newExecutingProcess[0].id,
@@ -161,7 +161,7 @@ const MLFQ: React.FC<AlgorithmProps> = ({
 
   useEffect(() => {
     intervalRef.current = setTimeout(() => {
-      let newState = MLFQStep(state, boostTime, timeQuantum);
+      const newState = MLFQStep(state, boostTime, timeQuantum);
       console.log(state);
       if (state.time < newState.time) {
         setState(newState);
@@ -174,7 +174,7 @@ const MLFQ: React.FC<AlgorithmProps> = ({
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
     //If time is in dependency array, will tick until time does not change
-  }, [state]);
+  }, [state, hasSteppedFinalTime, boostTime, timeQuantum]);
   return (
     <div>
       {state.time}

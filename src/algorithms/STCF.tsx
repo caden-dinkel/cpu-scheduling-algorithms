@@ -6,13 +6,13 @@ import TimelineOthers from "@/components/TimelineOthers";
 const STCFStep = (myState: AlgorithmState) => {
   //new State Values
   let newTime = myState.time || 0;
-  let newAlgorithmExecution = [...myState.algorithmExecution]; // Shallow copy to trigger state update
-  let newCompletedProcesses = [...myState.completedProcesses]; // Ensure completed processes array updates
-  let newReadyQueue = [...myState.readyQueue];
-  let newExecutingProcess = [...myState.executingProcess];
-  let newNotQueuedProcesses = [...myState.notQueuedProcesses];
-  let newRemainingTimeQuantum = myState.remainingTimeQuantum;
-  let newRemainingBoostTime = myState.remainingBoostTime;
+  const newAlgorithmExecution = [...myState.algorithmExecution]; // Shallow copy to trigger state update
+  const newCompletedProcesses = [...myState.completedProcesses]; // Ensure completed processes array updates
+  const newReadyQueue = [...myState.readyQueue];
+  const newExecutingProcess = [...myState.executingProcess];
+  const newNotQueuedProcesses = [...myState.notQueuedProcesses];
+  const newRemainingTimeQuantum = myState.remainingTimeQuantum;
+  const newRemainingBoostTime = myState.remainingBoostTime;
 
   //Any changes made to the array don't reflect to processes, but changes to elements do
 
@@ -57,7 +57,7 @@ const STCFStep = (myState: AlgorithmState) => {
   ) {
     newExecutingProcess[0].lastEnqueueTime = newTime;
     newExecutingProcess[0].status = "waiting";
-    let newTimeSegment: TimeSegment = {
+    const newTimeSegment: TimeSegment = {
       startTime: newExecutingProcess[0].lastExecutionStartTime!,
       endTime: newTime,
       processID: newExecutingProcess[0].id,
@@ -75,7 +75,7 @@ const STCFStep = (myState: AlgorithmState) => {
     //Add time segment to AlgorithmExecution
     newExecutingProcess[0].endTime = newTime;
     newExecutingProcess[0].status = "completed";
-    let newTimeSegment: TimeSegment = {
+    const newTimeSegment: TimeSegment = {
       startTime: newExecutingProcess[0].lastExecutionStartTime!,
       endTime: newTime,
       processID: newExecutingProcess[0].id,
@@ -105,8 +105,6 @@ const STCFStep = (myState: AlgorithmState) => {
 
   if (newCompletedProcesses.length !== myState.processes.length) {
     newTime += 1;
-    newRemainingBoostTime += 1;
-    newRemainingTimeQuantum += 1;
   }
 
   return {
@@ -152,7 +150,7 @@ const STCF: React.FC<AlgorithmProps> = ({ processes, totalTime }) => {
 
   useEffect(() => {
     intervalRef.current = setTimeout(() => {
-      let newState = STCFStep(state);
+      const newState = STCFStep(state);
       console.log(state);
       if (state.time < newState.time) {
         setState(newState);
@@ -165,7 +163,7 @@ const STCF: React.FC<AlgorithmProps> = ({ processes, totalTime }) => {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
     //If time is in dependency array, will tick until time does not change
-  }, [state]);
+  }, [state, hasSteppedFinalTime]);
   return (
     <div>
       {state.time}

@@ -6,13 +6,13 @@ import TimelineOthers from "@/components/TimelineOthers";
 const SJFStep = (myState: AlgorithmState) => {
   //new State Values
   let newTime = myState.time || 0;
-  let newAlgorithmExecution = [...myState.algorithmExecution]; // Shallow copy to trigger state update
-  let newCompletedProcesses = [...myState.completedProcesses]; // Ensure completed processes array updates
-  let newReadyQueue = [...myState.readyQueue];
-  let newExecutingProcess = [...myState.executingProcess];
-  let newNotQueuedProcesses = [...myState.notQueuedProcesses];
-  let newRemainingTimeQuantum = myState.remainingTimeQuantum;
-  let newRemainingBoostTime = myState.remainingBoostTime;
+  const newAlgorithmExecution = [...myState.algorithmExecution]; // Shallow copy to trigger state update
+  const newCompletedProcesses = [...myState.completedProcesses]; // Ensure completed processes array updates
+  const newReadyQueue = [...myState.readyQueue];
+  const newExecutingProcess = [...myState.executingProcess];
+  const newNotQueuedProcesses = [...myState.notQueuedProcesses];
+  const newRemainingTimeQuantum = myState.remainingTimeQuantum;
+  const newRemainingBoostTime = myState.remainingBoostTime;
 
   //Any changes made to the array don't reflect to processes, but changes to elements do
 
@@ -49,7 +49,7 @@ const SJFStep = (myState: AlgorithmState) => {
   ) {
     newExecutingProcess[0].endTime = newTime;
     newExecutingProcess[0].status = "completed";
-    let newTimeSegment: TimeSegment = {
+    const newTimeSegment: TimeSegment = {
       startTime: newExecutingProcess[0].lastExecutionStartTime!,
       endTime: newTime,
       processID: newExecutingProcess[0].id,
@@ -79,8 +79,6 @@ const SJFStep = (myState: AlgorithmState) => {
 
   if (newCompletedProcesses.length !== myState.processes.length) {
     newTime += 1;
-    newRemainingBoostTime += 1;
-    newRemainingTimeQuantum += 1;
   }
 
   return {
@@ -126,7 +124,7 @@ const SJF: React.FC<AlgorithmProps> = ({ processes, totalTime }) => {
 
   useEffect(() => {
     intervalRef.current = setTimeout(() => {
-      let newState = SJFStep(state);
+      const newState = SJFStep(state);
       console.log(state);
       if (state.time < newState.time) {
         setState(newState);
@@ -139,22 +137,10 @@ const SJF: React.FC<AlgorithmProps> = ({ processes, totalTime }) => {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
     //If time is in dependency array, will tick until time does not change
-  }, [state]);
+  }, [state, hasSteppedFinalTime]);
   return (
     <div>
       {state.time}
-      <div>
-        {state.algorithmExecution.map((p, index) => (
-          <div key={index}>
-            Start: {p.startTime} End: {p.endTime} PID: {p.processID}
-          </div>
-        ))}
-      </div>
-      <div>
-        <DisplayCompletedProcesses
-          completedProcesses={state.completedProcesses}
-        />
-      </div>
       <TimelineOthers
         processes={state.processes}
         executingProcess={state.executingProcess}
@@ -162,6 +148,18 @@ const SJF: React.FC<AlgorithmProps> = ({ processes, totalTime }) => {
         time={state.time}
         totalTime={totalTime}
       />
+      <div>
+        <DisplayCompletedProcesses
+          completedProcesses={state.completedProcesses}
+        />
+      </div>
+      <div>
+        {state.algorithmExecution.map((p, index) => (
+          <div key={index}>
+            Start: {p.startTime} End: {p.endTime} PID: {p.processID}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

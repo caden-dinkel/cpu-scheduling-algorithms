@@ -1,5 +1,3 @@
-import NumberBox from "./NumberBox";
-
 export interface CheckboxProps {
   label: string;
   id: string;

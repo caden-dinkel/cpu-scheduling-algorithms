@@ -24,23 +24,24 @@ const AnimatingState: React.FC<AnimatingStateProps> = ({
   const addedTime = Math.min(
     ...processes.map((process) => process.arrivalTime)
   );
+  const totalTime = totalBurstTime + addedTime;
 
   return (
     <div>
       {algorithmsToRun.has("FCFS") && (
-        <FCFS processes={processes} totalTime={totalBurstTime + addedTime} />
+        <FCFS processes={processes} totalTime={totalTime} />
       )}
       {algorithmsToRun.has("SJF") && (
-        <SJF processes={processes} totalTime={totalBurstTime + addedTime} />
+        <SJF processes={processes} totalTime={totalTime} />
       )}
-      {algorithmsToRun.has("FTCF") && (
-        <STCF processes={processes} totalTime={totalBurstTime + addedTime} />
+      {algorithmsToRun.has("STCF") && (
+        <STCF processes={processes} totalTime={totalTime} />
       )}
       {algorithmsToRun.has("RR") && (
         <RR
           processes={processes}
           timeQuantum={timeQuantumRR!}
-          totalTime={totalBurstTime + addedTime}
+          totalTime={totalTime}
         />
       )}
       {algorithmsToRun.has("MLFQ") && (
@@ -48,7 +49,7 @@ const AnimatingState: React.FC<AnimatingStateProps> = ({
           processes={processes}
           timeQuantum={timeQuantumMLFQ!}
           boostTime={boostTime!}
-          totalTime={totalBurstTime + addedTime}
+          totalTime={totalTime}
         />
       )}
     </div>

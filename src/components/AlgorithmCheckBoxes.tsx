@@ -23,14 +23,6 @@ const AlgorithmCheckBoxes: React.FC<AlgorithmCheckBoxesProps> = ({
   timeQuantumRR,
   boostTimeMLFQ,
 }) => {
-  const checkboxes = [
-    { label: "First-Come-First-Serve", id: "FCFS" },
-    { label: "Shortest-Job-First", id: "SJF" },
-    { label: "Shortest-Time-To-Completion-First", id: "STCF" },
-    { label: "Round-Robin", id: "RR" },
-    { label: "Multi-Level-Feedback-Queue", id: "MLFQ" },
-  ];
-
   return (
     <div>
       <Checkbox
@@ -64,11 +56,11 @@ const AlgorithmCheckBoxes: React.FC<AlgorithmCheckBoxesProps> = ({
         value={timeQuantumRR}
       />
       <CheckNumberBoxComboMLFQ
-        key="RR"
-        id="RR"
-        label="Round-Robin"
-        checked={selectedValues.has("RR")}
-        onChange={(checked) => onSelectionChange("RR", checked)}
+        key="MLFQ"
+        id="MLFQ"
+        label="Multi-Level-Feedback-Queue"
+        checked={selectedValues.has("MLFQ")}
+        onChange={(checked) => onSelectionChange("MLFQ", checked)}
         onBoostTimeChange={onMLFQBoostTimeChange}
         onTimeQuantumChange={onMLFQTimeQuantumChange}
         boostTime={boostTimeMLFQ}
