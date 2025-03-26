@@ -26,68 +26,67 @@ interface BarChartProps {
 }
 
 const BarChart: React.FC<BarChartProps> = ({ completedProcesses }) => {
+  // Ensure there are completed processes
+  if (!completedProcesses.length) {
+    return <div>No completed processes available.</div>; // Fallback message when no data
+  }
+  console.log(completedProcesses);
+
   const data = {
-    labels: completedProcesses.map((p) => {
-      return `P${p.id}`;
-    }),
+    labels: completedProcesses.map((p) => `P${p.id}`),
     datasets: [
       {
         label: "Turnaround Time",
-        data: completedProcesses.map((p) => {
-          return p.endTime! - p.arrivalTime;
-        }),
+        data: completedProcesses.map((p) => p.endTime! - p.arrivalTime),
         backgroundColor: "rgb(126, 73, 73)",
-        borderColor: "rgba(255, 99, 132, 1)", // Border color for Category 1
-        borderWidth: 1, // Border width
+        borderColor: "rgba(255, 99, 132, 1)",
+        borderWidth: 1,
       },
       {
-        label: "Response Time", // Second dataset
-        data: completedProcesses.map((p) => {
-          return p.startTime! - p.arrivalTime;
-        }), // Y-axis values for this category
-        backgroundColor: "rgba(60, 132, 181, 0.5)", // Bar color for Category 2
-        borderColor: "rgba(54, 162, 235, 1)", // Border color for Category 2
-        borderWidth: 1, // Border width
+        label: "Response Time",
+        data: completedProcesses.map((p) => p.startTime! - p.arrivalTime),
+        backgroundColor: "rgba(60, 132, 181, 0.5)",
+        borderColor: "rgba(54, 162, 235, 1)",
+        borderWidth: 1,
       },
       {
-        label: "Burst Time", // Third dataset
-        data: completedProcesses.map((p) => {
-          return p.burstTime;
-        }), // Y-axis values for this category
-        backgroundColor: "rgba(54, 117, 80, 0.5)", // Bar color for Category 3
-        borderColor: "rgb(24, 227, 109)", // Border color for Category 3
-        borderWidth: 1, // Border width
+        label: "Burst Time",
+        data: completedProcesses.map((p) => p.burstTime),
+        backgroundColor: "rgba(54, 117, 80, 0.5)",
+        borderColor: "rgb(24, 227, 109)",
+        borderWidth: 1,
       },
     ],
   };
+
   const options = {
     responsive: true,
     plugins: {
       legend: {
-        position: "top" as const, // Position of the legend
+        position: "top" as const,
       },
       tooltip: {
-        enabled: true, // Tooltip enabled on hover
+        enabled: true,
       },
     },
     scales: {
       x: {
         title: {
           display: true,
-          text: "Processes", // Title for the X-axis
+          text: "Processes",
         },
         grid: {
-          offset: true, // Ensure the bars are grouped correctly
+          offset: true,
         },
       },
       y: {
         title: {
           display: true,
-          text: "Time Units", // Title for the Y-axis
+          text: "Time Units",
         },
-        min: 0, // Minimum value of Y-axis
+        min: 0,
         ticks: {
-          stepSize: 20, // Step size for Y-axis ticks
+          stepSize: 20,
         },
       },
     },

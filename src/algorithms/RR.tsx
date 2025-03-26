@@ -92,11 +92,12 @@ const RRStep = (myState: AlgorithmState, timeQuantum: number) => {
 
   if (newExecutingProcess.at(0) !== undefined) {
     newExecutingProcess[0].remainingBurstTime += 1;
+    //TQ doesn't change unless there's a process executing.
+    newRemainingTimeQuantum += 1;
   }
 
   if (newCompletedProcesses.length !== myState.processes.length) {
     newTime += 1;
-    newRemainingTimeQuantum += 1;
   }
 
   return {

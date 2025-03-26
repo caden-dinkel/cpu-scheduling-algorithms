@@ -3,6 +3,12 @@ import { useRef, useState, useEffect } from "react";
 import DisplayCompletedProcesses from "@/components/DisplayCompletedProcesses";
 import TimelineMLFQ from "@/components/Timeline";
 
+import dynamic from "next/dynamic";
+
+const BarChart = dynamic(() => import("../components/PieChart"), {
+  ssr: false, // Disable SSR for this component
+});
+
 const MLFQStep = (
   myState: AlgorithmState,
   boostTime: number,
@@ -96,9 +102,10 @@ const MLFQStep = (
     newExecutingProcess.at(0) === undefined
   ) {
     newReadyQueue[0].status = "executing";
-    newReadyQueue[0].startTime = newReadyQueue[0].startTime
-      ? newReadyQueue[0].startTime
-      : newTime;
+    newReadyQueue[0].startTime =
+      newReadyQueue[0].startTime !== undefined
+        ? newReadyQueue[0].startTime
+        : newTime;
     newReadyQueue[0].lastExecutionStartTime = newTime;
     newExecutingProcess.push(newReadyQueue[0]);
     newReadyQueue.shift();
@@ -106,12 +113,12 @@ const MLFQStep = (
 
   if (newExecutingProcess.at(0) !== undefined) {
     newExecutingProcess[0].remainingBurstTime += 1;
+    newRemainingBoostTime += 1;
+    newRemainingTimeQuantum += 1;
   }
 
   if (newCompletedProcesses.length !== myState.processes.length) {
     newTime += 1;
-    newRemainingBoostTime += 1;
-    newRemainingTimeQuantum += 1;
   }
 
   return {
@@ -168,6 +175,7 @@ const MLFQ: React.FC<AlgorithmProps> = ({
       } else if (!hasSteppedFinalTime) {
         setHasSteppedFinalTime(true);
         setState(newState);
+        clearInterval(intervalRef.current!);
       }
     }, 1000);
     return () => {
@@ -206,7 +214,9 @@ const MLFQ: React.FC<AlgorithmProps> = ({
           completedProcesses={state.completedProcesses}
         />
       </div>
-
+      <div className="border p-2 rounded">
+        <BarChart completedProcesses={state.completedProcesses} />
+      </div>
       <div className="border p-2 rounded">
         <h6 className="text-lg font-bold text-left">Process Execution Path</h6>
         {state.algorithmExecution.map((p, index) => (

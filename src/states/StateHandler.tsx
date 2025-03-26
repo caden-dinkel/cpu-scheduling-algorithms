@@ -5,9 +5,9 @@ import AnimatingState from "./AnimatingState";
 import Header from "@/components/Header";
 
 const StateHandler: React.FC = () => {
-  const [currentState, setCurrentState] = useState<
-    "initial" | "animating" | "complete"
-  >("initial");
+  const [currentState, setCurrentState] = useState<"initial" | "animating">(
+    "initial"
+  );
 
   const [selectedAlgorithms, setSelectedAlgorithms] = useState<Set<string>>(
     new Set()
@@ -44,8 +44,6 @@ const StateHandler: React.FC = () => {
     switch (currentState) {
       case "animating":
         setCurrentState("initial");
-      case "complete":
-        setCurrentState("animating");
       case "initial":
         setCurrentState("initial");
     }
