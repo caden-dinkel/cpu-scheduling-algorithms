@@ -1,6 +1,7 @@
 import InitialState from "./InitialState";
 import { useState } from "react";
 import { Process } from "@/types/Process";
+import AnimatingState from "./AnimatingState";
 
 const StateHandler: React.FC = () => {
   const [currentState, setCurrentState] = useState<
@@ -53,6 +54,12 @@ const StateHandler: React.FC = () => {
           onSubmit={handleStartAnimation}
           processes={processes}
           onGenerate={setProcesses}
+        />
+      )}
+      {currentState === "animating" && (
+        <AnimatingState
+          processes={processes}
+          algorithmsToRun={selectedAlgorithms}
         />
       )}
     </div>

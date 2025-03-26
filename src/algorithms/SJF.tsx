@@ -1,5 +1,7 @@
 import { AlgorithmState, TimeSegment, AlgorithmProps } from "@/types/Process";
 import { useRef, useState, useEffect } from "react";
+import DisplayCompletedProcesses from "@/components/DisplayCompletedProcesses";
+import TimelineOthers from "@/components/TimelineOthers";
 
 const SJFStep = (myState: AlgorithmState) => {
   //new State Values
@@ -18,6 +20,10 @@ const SJFStep = (myState: AlgorithmState) => {
 
   //When processes initially arrive
   //Set priority to highest (1)
+
+  if (newTime === 0) {
+    newNotQueuedProcesses.sort((a, b) => a.arrivalTime - b.arrivalTime);
+  }
 
   while (
     newNotQueuedProcesses.at(0) !== undefined &&
@@ -91,7 +97,7 @@ const SJFStep = (myState: AlgorithmState) => {
   //
 };
 
-const SJF: React.FC<AlgorithmProps> = ({ processes }) => {
+const SJF: React.FC<AlgorithmProps> = ({ processes, totalTime }) => {
   //Should be the only state variables we need (i.e. The only values that render something)
   //Add ready Queue, new processes and completed Processes to this
 
@@ -144,6 +150,18 @@ const SJF: React.FC<AlgorithmProps> = ({ processes }) => {
           </div>
         ))}
       </div>
+      <div>
+        <DisplayCompletedProcesses
+          completedProcesses={state.completedProcesses}
+        />
+      </div>
+      <TimelineOthers
+        processes={state.processes}
+        executingProcess={state.executingProcess}
+        executionPath={state.algorithmExecution}
+        time={state.time}
+        totalTime={totalTime}
+      />
     </div>
   );
 };

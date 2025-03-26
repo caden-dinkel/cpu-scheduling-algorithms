@@ -1,7 +1,9 @@
 import { AlgorithmState, TimeSegment, AlgorithmProps } from "@/types/Process";
 import { useRef, useState, useEffect } from "react";
+import DisplayCompletedProcesses from "@/components/DisplayCompletedProcesses";
+import TimelineOthers from "@/components/TimelineOthers";
 
-const FTCFStep = (myState: AlgorithmState) => {
+const STCFStep = (myState: AlgorithmState) => {
   //new State Values
   let newTime = myState.time || 0;
   let newAlgorithmExecution = [...myState.algorithmExecution]; // Shallow copy to trigger state update
@@ -18,6 +20,10 @@ const FTCFStep = (myState: AlgorithmState) => {
 
   //When processes initially arrive
   //Set priority to highest (1)
+
+  if (newTime === 0) {
+    newNotQueuedProcesses.sort((a, b) => a.arrivalTime - b.arrivalTime);
+  }
 
   while (
     newNotQueuedProcesses.at(0) !== undefined &&
@@ -117,7 +123,7 @@ const FTCFStep = (myState: AlgorithmState) => {
   //
 };
 
-const FTCF: React.FC<AlgorithmProps> = ({ processes }) => {
+const STCF: React.FC<AlgorithmProps> = ({ processes, totalTime }) => {
   //Should be the only state variables we need (i.e. The only values that render something)
   //Add ready Queue, new processes and completed Processes to this
 
@@ -146,7 +152,7 @@ const FTCF: React.FC<AlgorithmProps> = ({ processes }) => {
 
   useEffect(() => {
     intervalRef.current = setTimeout(() => {
-      let newState = FTCFStep(state);
+      let newState = STCFStep(state);
       console.log(state);
       if (state.time < newState.time) {
         setState(newState);
@@ -163,6 +169,18 @@ const FTCF: React.FC<AlgorithmProps> = ({ processes }) => {
   return (
     <div>
       {state.time}
+      <TimelineOthers
+        processes={state.processes}
+        executingProcess={state.executingProcess}
+        executionPath={state.algorithmExecution}
+        time={state.time}
+        totalTime={totalTime}
+      />
+      <div>
+        <DisplayCompletedProcesses
+          completedProcesses={state.completedProcesses}
+        />
+      </div>
       <div>
         {state.algorithmExecution.map((p, index) => (
           <div key={index}>
@@ -173,6 +191,6 @@ const FTCF: React.FC<AlgorithmProps> = ({ processes }) => {
     </div>
   );
 };
-export default FTCF;
+export default STCF;
 
 //HAHA It works!!!

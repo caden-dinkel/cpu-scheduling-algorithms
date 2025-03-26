@@ -15,6 +15,8 @@ export interface TimeSegment {
   startTime: number;
   endTime: number;
   processID: number;
+  //Only needed for MLFQ
+  priority?: 0 | 1 | 2 | 3;
 }
 
 export interface AlgorithmState {
@@ -33,4 +35,5 @@ export interface AlgorithmProps {
   processes: Process[];
   timeQuantum?: number;
   boostTime?: number;
+  totalTime: number;
 }

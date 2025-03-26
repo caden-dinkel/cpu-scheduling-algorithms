@@ -3,6 +3,8 @@ import Button from "@/components/Button";
 import NumberBox from "@/components/NumberBox";
 import { Process } from "@/types/Process";
 import { useState } from "react";
+import ProcessGeneration from "@/components/GenerateProcesses";
+import DisplayProcesses from "@/components/DisplayProcesses";
 
 interface InitialStateProps {
   //For Algorithm Check Boxes
@@ -49,6 +51,8 @@ const InitialState: React.FC<InitialStateProps> = ({
         label="Start Animation"
         disabled={processes ? false : true}
       />
+      <ProcessGeneration onGenerate={onGenerate} />
+      {processes.length > 0 && <DisplayProcesses processes={processes} />}
     </>
   );
 };

@@ -1,5 +1,7 @@
 import { AlgorithmState, TimeSegment, AlgorithmProps } from "@/types/Process";
 import { useRef, useState, useEffect } from "react";
+import DisplayCompletedProcesses from "@/components/DisplayCompletedProcesses";
+import TimelineOthers from "@/components/TimelineOthers";
 
 const RRStep = (myState: AlgorithmState, timeQuantum: number) => {
   //new State Values
@@ -18,6 +20,10 @@ const RRStep = (myState: AlgorithmState, timeQuantum: number) => {
 
   //When processes initially arrive
   //Set priority to highest (1)
+
+  if (newTime === 0) {
+    newNotQueuedProcesses.sort((a, b) => a.arrivalTime - b.arrivalTime);
+  }
 
   while (
     newNotQueuedProcesses.at(0) !== undefined &&
@@ -107,7 +113,11 @@ const RRStep = (myState: AlgorithmState, timeQuantum: number) => {
   //
 };
 
-const RR: React.FC<AlgorithmProps> = ({ processes, timeQuantum = 4 }) => {
+const RR: React.FC<AlgorithmProps> = ({
+  processes,
+  timeQuantum = 4,
+  totalTime,
+}) => {
   //Should be the only state variables we need (i.e. The only values that render something)
   //Add ready Queue, new processes and completed Processes to this
 
@@ -152,6 +162,18 @@ const RR: React.FC<AlgorithmProps> = ({ processes, timeQuantum = 4 }) => {
   return (
     <div>
       {state.time}
+      <TimelineOthers
+        processes={state.processes}
+        executingProcess={state.executingProcess}
+        executionPath={state.algorithmExecution}
+        time={state.time}
+        totalTime={totalBurstTime + addedTime}
+      />
+      <div>
+        <DisplayCompletedProcesses
+          completedProcesses={state.completedProcesses}
+        />
+      </div>
       <div>
         {state.algorithmExecution.map((p, index) => (
           <div key={index}>

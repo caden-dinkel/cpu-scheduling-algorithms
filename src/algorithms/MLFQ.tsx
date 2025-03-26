@@ -1,6 +1,7 @@
 import { AlgorithmState, TimeSegment, AlgorithmProps } from "@/types/Process";
 import { useRef, useState, useEffect } from "react";
 import DisplayCompletedProcesses from "@/components/DisplayCompletedProcesses";
+import TimelineMLFQ from "@/components/Timeline";
 
 const MLFQStep = (
   myState: AlgorithmState,
@@ -23,6 +24,9 @@ const MLFQStep = (
 
   //When processes initially arrive
   //Set priority to highest (1)
+  if (newTime === 0) {
+    newNotQueuedProcesses.sort((a, b) => a.arrivalTime - b.arrivalTime);
+  }
 
   while (
     newNotQueuedProcesses.at(0) !== undefined &&
@@ -54,6 +58,7 @@ const MLFQStep = (
       startTime: newExecutingProcess[0].lastExecutionStartTime!,
       endTime: newTime,
       processID: newExecutingProcess[0].id,
+      priority: newExecutingProcess[0].priority,
     };
     newAlgorithmExecution.push(newTimeSegment);
     newCompletedProcesses.push(newExecutingProcess[0]);
@@ -68,15 +73,15 @@ const MLFQStep = (
   //If timequantum out, swap back to readyQueue, lower priority
   if (newRemainingTimeQuantum === timeQuantum) {
     newExecutingProcess[0].lastEnqueueTime = newTime;
-
-    newExecutingProcess[0].priority =
-      newExecutingProcess[0].priority === 1 ? 2 : 3;
-
     let newTimeSegment: TimeSegment = {
       startTime: newExecutingProcess[0].lastExecutionStartTime!,
       endTime: newTime,
       processID: newExecutingProcess[0].id,
+      priority: newExecutingProcess[0].priority,
     };
+    newExecutingProcess[0].priority =
+      newExecutingProcess[0].priority === 1 ? 2 : 3;
+    newExecutingProcess[0].status = "waiting";
     newAlgorithmExecution.push(newTimeSegment);
 
     newReadyQueue.push(newExecutingProcess[0]);
@@ -127,6 +132,7 @@ const MLFQ: React.FC<AlgorithmProps> = ({
   processes,
   timeQuantum = 4,
   boostTime = 10,
+  totalTime,
 }) => {
   //Should be the only state variables we need (i.e. The only values that render something)
   //Add ready Queue, new processes and completed Processes to this
@@ -148,7 +154,6 @@ const MLFQ: React.FC<AlgorithmProps> = ({
   const [hasSteppedFinalTime, setHasSteppedFinalTime] = useState(false);
 
   //Processes is sorted by arrival time
-  state.notQueuedProcesses.sort((a, b) => a.arrivalTime - b.arrivalTime);
 
   //Don't trigger re-render, but update between intervals
 
@@ -173,6 +178,16 @@ const MLFQ: React.FC<AlgorithmProps> = ({
   return (
     <div>
       {state.time}
+      <TimelineMLFQ
+        processes={state.processes}
+        executingProcess={state.executingProcess}
+        executionPath={state.algorithmExecution}
+        time={state.time}
+        totalTime={totalTime}
+      />
+      <DisplayCompletedProcesses
+        completedProcesses={state.completedProcesses}
+      />
       <div>
         {state.algorithmExecution.map((p, index) => (
           <div key={index}>
@@ -180,9 +195,6 @@ const MLFQ: React.FC<AlgorithmProps> = ({
           </div>
         ))}
       </div>
-      <DisplayCompletedProcesses
-        completedProcesses={state.completedProcesses}
-      />
     </div>
   );
 };

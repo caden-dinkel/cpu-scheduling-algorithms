@@ -23,7 +23,7 @@ const generateRandomProcesses = (
       id: i,
       burstTime: burstTime,
       arrivalTime: arrivalTime,
-      remainingBurstTime: burstTime,
+      remainingBurstTime: 0,
       status: "none",
       lastEnqueueTime: arrivalTime,
       priority: 0,
@@ -143,3 +143,5 @@ const ProcessGeneration: React.FC<ProcessGenerationProps> = ({
     </>
   );
 };
+
+export default ProcessGeneration;
