@@ -7,6 +7,7 @@ const nextConfig = {
   images: { unoptimized: true }, // Disable Next.js image optimization for static hosting
   basePath: "/cpu-scheduling-algorithms",
   assetPrefix: "/cpu-scheduling-algorithms/",
+  skipTrailingSlashRedirect: true,
 };
 
 module.exports = nextConfig;
