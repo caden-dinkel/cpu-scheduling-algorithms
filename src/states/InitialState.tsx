@@ -46,6 +46,7 @@ const InitialState: React.FC<InitialStateProps> = ({
           boostTimeMLFQ={boostTimeMLFQ}
           onSubmit={onSubmit}
         />
+        <h1>testing</h1>
       </div>
       {processes.length > 0 && <DisplayProcesses processes={processes} />}
     </>
